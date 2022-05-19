@@ -91,7 +91,7 @@ public class Turtle {
 			polygonXPoints.add(state.x);
 			polygonYPoints.add(state.y);
 		}
-		if (state.penState) {
+		if (state.penState && world != null) {
 			Graphics2D g2 = world.canvas.g2;
 			Color tmpColor = g2.getColor();
 			Stroke tmpStroke = g2.getStroke();
@@ -216,9 +216,29 @@ public class Turtle {
 	 * Engages the turtle's pen, causing it to draw lines from this point on.
 	 * Engaged by default.
 	 */
-	public void penDown() {
+	public void pendown() {
 		lastState.copy(state);
 		state.penState = true;
+	}
+
+	/**
+	 * Draws a dot at the turtle's location with radius r.
+	 * @param r The radius for the dot.
+	 */
+	public void dot(int r) {
+		if (world != null) {
+			Graphics2D g2 = world.canvas.g2;
+			Color tmpColor = g2.getColor();
+			g2.setColor(state.color);
+			g2.drawOval((int)(state.x+0.5), (int)(state.y+0.5), r, r);
+			g2.setColor(tmpColor);
+		}
+	}
+	/**
+	 * Draws a dot at the turtle's location.
+	 */
+	public void dot() {
+		dot(state.dotRadius);
 	}
 
 	/**
@@ -306,7 +326,7 @@ public class Turtle {
 	 * @param x The x coordinate to teleport to.
 	 * @param y The y coordinate to teleport to.
 	 */
-	public void teleport(int x, int y) {
+	public void teleport(double x, double y) {
 		lastState.copy(state);
 		state.x = x;
 		state.y = y;
@@ -319,7 +339,7 @@ public class Turtle {
 	 * @param dx Delta x is the distance to move on the x axis of the world.
 	 * @param dy Delta y is the distance to move on the y axis of the world.
 	 */
-	public void move(int dx, int dy) {
+	public void move(double dx, double dy) {
 		lastState.copy(state);
 		state.x += dx;
 		state.y += dy;
@@ -355,6 +375,8 @@ public class Turtle {
 	 */
 	public void beginFill() {
 		polygonMode = true;
+		polygonXPoints.clear();
+		polygonYPoints.clear();
 	}
 	/**
 	 * Clears the current polygon points record

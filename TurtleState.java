@@ -13,6 +13,8 @@ public class TurtleState {
 	public Stroke stroke;
 	/** Indicates whether the turtle's drawing pen is engaged or not. */
 	public boolean penState;
+	/** The radius used when drawing indicator dots. 5 by default. */
+	public int dotRadius;
 
 	/** The current x coordinate of the turtle in pixels right from the top left corner of the turtle world. */
 	public double x;
@@ -29,6 +31,7 @@ public class TurtleState {
 		color = state.color;
 		stroke = state.stroke;
 		penState = state.penState;
+		dotRadius = state.dotRadius;
 		x = state.x;
 		y = state.y;
 		theta = state.theta;
@@ -41,6 +44,7 @@ public class TurtleState {
 		color = Color.black;
 		stroke = new BasicStroke(1);
 		penState = true;
+		dotRadius = 5;
 		x = world.getWidth() / 2;
 		y = world.getHeight() / 2;
 		theta = 0;
@@ -52,14 +56,16 @@ public class TurtleState {
 	 * @param color The color the turtle will use to draw lines.
 	 * @param stroke The current pen stroke object to be used for drawing lines.  Should be castable to type {@link BasicStroke}
 	 * @param penState Indicates whether the turtle's drawing pen is engaged or not.
+	 * @param dotRadius The radius to be used for indicator dots.
 	 * @param x The initial x coordinate for the turtle state.
 	 * @param y The initial y coordinate for the turtle state.
 	 * @param theta The initial heading for the turtle state.
 	 */
-	public TurtleState(Color color, Stroke stroke, boolean penState, double x, double y, double theta) {
+	public TurtleState(Color color, Stroke stroke, boolean penState, int dotRadius, double x, double y, double theta) {
 		this.color = color;
 		this.stroke = stroke;
 		this.penState = penState;
+		this.dotRadius = dotRadius;
 		this.x = x;
 		this.y = y;
 		this.theta = theta;
@@ -82,6 +88,10 @@ public class TurtleState {
 		v.penState = penState;
 		penState = tmpPen;
 
+		int tmpDotRadius = v.dotRadius;
+		v.dotRadius = dotRadius;
+		dotRadius = tmpDotRadius;
+
 		double tmpX = v.x;
 		v.x = x;
 		x = tmpX;
@@ -103,6 +113,7 @@ public class TurtleState {
 		color = v.color;
 		stroke = v.stroke;
 		penState = v.penState;
+		dotRadius = v.dotRadius;
 
 		x = v.x;
 		y = v.y;

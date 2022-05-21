@@ -46,7 +46,7 @@ public class TurtleWorld extends JFrame {
 	 */
 	public TurtleWorld(int w, int h, String ... locations) {
 		if (w <= 0 || h <= 0) {
-			throw new IllegalArgumentException("width an height must be greater than 0.");
+			throw new IllegalArgumentException("width and height must be greater than 0.");
 		}
 		// Attempts to load an image from a set of known locations.
 		BufferedImage img = new BufferedImage(19, 19, BufferedImage.TYPE_INT_ARGB);

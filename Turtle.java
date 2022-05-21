@@ -363,6 +363,13 @@ public class Turtle {
 	}
 
 	/**
+	 * Nothing happens.
+	 */
+	public void xyzzy() {
+		System.out.println("Nothing happens.");
+	}
+
+	/**
 	 * Retrieves the world this turtle is currently registered to.
 	 * @return {@link TurtleWorld} The world this turtle is currently registered to.
 	 */

@@ -33,9 +33,9 @@ public class Turtle {
 	 * @param world The world to place the turtle in.
 	 */
 	public Turtle(TurtleWorld world) {
-		reset(world);
 		polygonXPoints = new ArrayList<Double>();
 		polygonYPoints = new ArrayList<Double>();
+		reset(world);
 	}
 
 	/**
@@ -45,7 +45,9 @@ public class Turtle {
 	 * @param world The new world to place the turtle into.
 	 */
 	public void reset(TurtleWorld world) {
-		this.world.turtles.remove(this);
+		if (this.world != null) {
+			this.world.turtles.remove(this);
+		}
 		world.turtles.add(this);
 		this.world = world;
 		state = new TurtleState(world);

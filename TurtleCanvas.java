@@ -62,12 +62,13 @@ public class TurtleCanvas extends JPanel {
 	}
 
 	private void drawImg(Graphics2D g2, BufferedImage img, int x, int y, double r) {
-		x -= img.getWidth()/2;
-		y -= img.getHeight()/2;
+		x -= img.getWidth() / 2;
+		y -= img.getHeight() / 2;
 		AffineTransform backup = g2.getTransform();
-		AffineTransform a = AffineTransform.getRotateInstance(r, x+img.getWidth()/2, y+img.getHeight()/2);
+		AffineTransform a = AffineTransform.getRotateInstance(Math.toRadians(r+90), x + img.getWidth() / 2, y + img.getHeight() / 2);
+		a.concatenate(backup);
 		g2.setTransform(a);
-		g2.drawImage(img, x, y, this);
+		g2.drawImage(img, x, y, null);
 		g2.setTransform(backup);
 	}
 

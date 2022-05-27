@@ -50,12 +50,16 @@ public class TurtleWorld extends JFrame {
 		}
 		// Attempts to load an image from a set of known locations.
 		BufferedImage img = new BufferedImage(19, 19, BufferedImage.TYPE_INT_ARGB);
+		boolean loaded = false;
 		File imgFile;
+		ArrayList<File> paths = new ArrayList<File>(locations.length);
 		for (int i = 0; i < locations.length; i++) {
 			imgFile = new File(locations[i]);
+			paths.add(imgFile);
 			if (imgFile.exists()) {
 				try {
 					img = ImageIO.read(imgFile);
+					loaded = true;
 					break;
 				} catch (IOException e) {
 					System.out.println("Image failed to load. Details: ");
@@ -65,6 +69,14 @@ public class TurtleWorld extends JFrame {
 				}
 			}
 		}
+		if (!loaded) {
+			System.out.println("Image not found. Paths: ");
+			for (int i = 0; i < paths.size(); i++) {
+				System.out.println("Path " + i + ": " + paths.get(i).getPath());
+				System.out.println("Abs path " + i + ": " + paths.get(i).getAbsolutePath());
+			}
+		}
+		paths.clear();
 
 		// Window setup
 		turtles = new ArrayList<Turtle>();

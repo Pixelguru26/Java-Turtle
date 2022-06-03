@@ -55,7 +55,7 @@ public class TurtleCanvas extends JPanel {
 			for (int i = 0; i < turtles.size(); i++) {
 				// v = rotate(turtleImg, turtles.get(i).heading() + 90);
 				// g.drawImage(v, (int)(turtles.get(i).getX() - v.getWidth() / 2), (int)(turtles.get(i).getY() - v.getHeight() / 2), this);
-				drawImg(g2, turtleImg, (int)turtles.get(i).getX(), (int)turtles.get(i).getY(), turtles.get(i).heading());
+				drawImg((Graphics2D)g, turtleImg, (int)turtles.get(i).getX(), (int)turtles.get(i).getY(), turtles.get(i).heading());
 			}
 		}
 		g2.setStroke(new java.awt.BasicStroke(1));

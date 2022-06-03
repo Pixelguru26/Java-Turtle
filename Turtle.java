@@ -253,6 +253,32 @@ public class Turtle {
 		state.color = v;
 	}
 	/**
+	 * Sets the color to use for lines drawn by the turtle after this point.
+	 * Black by default.
+	 * @param r 0-255
+	 * @param g 0-255
+	 * @param b 0-255
+	 */
+	public void color(int r, int g, int b) {
+		color(new Color(
+			Math.min(Math.max(r, 0), 255),
+			Math.min(Math.max(g, 0), 255), 
+			Math.min(Math.max(b, 0), 255))
+			);
+	}
+	
+	/**
+	 * Sets the color to use for lines drawn by the turtle after this point.
+	 * Black by default.
+	 * 
+	 * @param r 0.0-1.0
+	 * @param g 0.0-1.0
+	 * @param b 0.0-1.0
+	 */
+	public void color(double r, double g, double b) {
+		color((int)(r*255), (int)(g*255), (int)(b*255));
+	}
+	/**
 	 * Black by default.
 	 * @return {@link Color} Returns the current color being used to draw lines.
 	 */

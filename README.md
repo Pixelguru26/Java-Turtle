@@ -1,8 +1,12 @@
 # Java Turtle
 
 A turtle implementation for Java.
-Turtle is an excellent tool for teaching new programmers. While attempting to do exactly that, I discovered that it's ridiculously difficult to find a decent ready-to-use implementation for Java online. So I made one.
-If you have any feature requests, feel free to contact me or (preferrably) open an issue for it. I'll be happy to help tinker with whatever needs changing.
+
+Turtle is an excellent and time-honored tool for teaching kay concepts to new programmers. It's an essential part of my curriculum, but when I attempted to integrate it into a Java course, I found it impossible to procure a ready-to-use implementation online.
+
+So I made one.
+
+If you have any feature requests, feel free to contact me or (preferably) open an issue for it. I'll be happy to help tinker with whatever needs changing.
 
 # Installation
 
@@ -15,7 +19,7 @@ Note: Javadoc documentation is included for the core features of the package. Th
 
 ## Basic Usage
 
-Once installed, basic turtle setup looks like this:
+Once included in a project, either as a package or a compiled jar, basic turtle setup looks like this:
 
 	import Turtle.*; // import all components of the turtle library
 

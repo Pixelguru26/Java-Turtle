@@ -89,7 +89,7 @@ public class Turtle {
 	 * Delays current thread, but will fail to do so without exception if interrupted.
 	 */
 	public void flush() {
-		if (polygonMode && state.x != lastState.x && state.y != lastState.y) {
+		if (polygonMode && (state.x != lastState.x || state.y != lastState.y)) {
 			polygonXPoints.add(state.x);
 			polygonYPoints.add(state.y);
 		}
@@ -432,6 +432,7 @@ public class Turtle {
 		Graphics g = world.canvas.g;
 		Color tmpColor = g.getColor();
 		g.setColor(fillColor);
+		g.fillPolygon(xPoints, yPoints, xPoints.length);
 		g.drawPolygon(xPoints, yPoints, xPoints.length);
 		g.setColor(tmpColor);
 	}

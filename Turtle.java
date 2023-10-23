@@ -1,7 +1,12 @@
 package Turtle;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 /**
  * A class for turtles which inhabit and draw on a turtle world.
@@ -78,7 +83,14 @@ public class Turtle {
 		state.copy(v);
 	}
 	/**
-	 * @return {@link TurtleState} The current state of the turtle, containing key alterable information.
+	 * Pushes the current state to the buffer, preparing for modification.
+	 * Draws nothing.
+	 */
+	public void pushState() {
+		lastState.copy(state);
+	}
+	/**
+	 * @return {@link TurtleState} A copy of the current state of the turtle.
 	 */
 	public TurtleState getState() {
 		return new TurtleState(state);
@@ -118,7 +130,7 @@ public class Turtle {
 	 * @param dist The distance, in pixels, to move.
 	 */
 	public void forward(double dist) {
-		lastState.copy(state);
+		pushState();
 		state.x += dist * Math.cos(Math.toRadians(state.theta));
 		state.y += dist * Math.sin(Math.toRadians(state.theta));
 		flush();
@@ -151,7 +163,7 @@ public class Turtle {
 	 * @param angle The angle to rotate, in degrees.
 	 */
 	public void right(double angle) {
-		lastState.copy(state);
+		pushState();
 		state.theta += angle;
 		state.theta %= 360.0;
 		if (state.theta < 0) {
@@ -189,7 +201,7 @@ public class Turtle {
 	 * @param dist The number of pixels to move to the turtle's right.
 	 */
 	public void strafeRight(double dist) {
-		lastState.copy(state);
+		pushState();
 		state.x += dist * Math.cos(Math.toRadians(state.theta + 90));
 		state.y += dist * Math.sin(Math.toRadians(state.theta + 90));
 		flush();
@@ -211,7 +223,7 @@ public class Turtle {
 	 * Engaged by default.
 	 */
 	public void penup() {
-		lastState.copy(state);
+		pushState();
 		state.penState = false;
 	}
 	/**
@@ -219,7 +231,7 @@ public class Turtle {
 	 * Engaged by default.
 	 */
 	public void pendown() {
-		lastState.copy(state);
+		pushState();
 		state.penState = true;
 	}
 
@@ -246,11 +258,11 @@ public class Turtle {
 	/**
 	 * Sets the color to use for lines drawn by the turtle after this point.
 	 * Black by default.
-	 * @param v The color that will be used.
+	 * @param color The new color that will be used.
 	 */
-	public void color(Color v) {
-		lastState.copy(state);
-		state.color = v;
+	public void color(Color color) {
+		pushState();
+		state.color = color;
 	}
 	/**
 	 * Sets the color to use for lines drawn by the turtle after this point.
@@ -261,9 +273,9 @@ public class Turtle {
 	 */
 	public void color(int r, int g, int b) {
 		color(new Color(
-			Math.min(Math.max(r, 0), 255),
-			Math.min(Math.max(g, 0), 255), 
-			Math.min(Math.max(b, 0), 255))
+				Math.min(Math.max(r, 0), 255),
+				Math.min(Math.max(g, 0), 255), 
+				Math.min(Math.max(b, 0), 255))
 			);
 	}
 	
@@ -288,10 +300,34 @@ public class Turtle {
 	/**
 	 * Sets the color to be used for filling polygons after this point.
 	 * White by default.
-	 * @param v The color that will be used.
+	 * @param color The new color that will be used.
 	 */
-	public void fillColor(Color v) {
-		fillColor = v;
+	public void fillColor(Color color) {
+		fillColor = color;
+	}
+	/**
+	 * Sets the color to be used for filling polygons after this point.
+	 * White by default.
+	 * @param r 0-255
+	 * @param g 0-255
+	 * @param b 0-255
+	 */
+	public void fillColor(int r, int g, int b) {
+		fillColor(new Color(
+			Math.min(Math.max(r, 0), 255),
+			Math.min(Math.max(r, 0), 255),
+			Math.min(Math.max(r, 0), 255)
+		));
+	}
+	/**
+	 * Sets the color to be used for filling polygons after this point.
+	 * White by default.
+	 * @param r 0.0-1.0
+	 * @param g 0.0-1.0
+	 * @param b 0.0-1.0
+	 */
+	public void fillColor(double r, double g, double b) {
+		fillColor((int)(r*255), (int)(g*255), (int)(b*255));
 	}
 	/**
 	 * White by default.
@@ -319,7 +355,7 @@ public class Turtle {
 	}
 
 	/**
-	 * 0.0 by default.
+	 * {@code 0.0} by default.
 	 * @return double Returns the current direction of the turtle in degrees.
 	 */
 	public double heading() {
@@ -346,6 +382,22 @@ public class Turtle {
 	 */
 	public double getY() {
 		return state.y;
+	}
+
+	/**
+	 * {@code null} by default.
+	 * @return {@link BufferedImage} The current image for this turtle.
+	 */
+	public BufferedImage getImage() {
+		return state.image;
+	}
+	/**
+	 * Sets the current image stored in the internal buffer. Set to {@code null} to reset.
+	 * {@code null} by default.
+	 * @param image An image that will be used to override the turtle's avatar and can be drawn using {@code drawPicture()}
+	 */
+	public void setImage(BufferedImage image) {
+		state.image = image;
 	}
 
 	/**
@@ -435,5 +487,54 @@ public class Turtle {
 		g.fillPolygon(xPoints, yPoints, xPoints.length);
 		g.drawPolygon(xPoints, yPoints, xPoints.length);
 		g.setColor(tmpColor);
+	}
+
+	/**
+	 * Attempts to load an image from the provided path to the turtle's internal buffer. Returns true if successful.
+	 * The new image will be used as the turtle's avatar.
+	 * 
+	 * @param location The path from the current working directory to the image, including extension.
+	 * @return True if image exists and is successfully loaded, otherwise false.
+	 */
+	public boolean loadImage(String location) {
+		if (location == null || location.trim().isEmpty()) {
+			System.out.println("Image file not found at: "+System.getProperty("user.dir"));
+			return false;
+		}
+		File imgFile = new File(location);
+		BufferedImage img;
+		if (imgFile.exists()) {
+			try {
+				img = ImageIO.read(imgFile);
+			} catch (IOException e) {
+				System.out.println("Image exists but failed to load. Details: ");
+				System.out.println("Path: " + imgFile.getPath());
+				System.out.println("Absolute path: " + imgFile.getAbsolutePath());
+				e.printStackTrace();
+				return false;
+			}
+			lastState.copy(state);
+			state.image = img;
+			return true;
+		} else {
+			System.out.println("Image file not found at: "+imgFile.getAbsolutePath());
+		}
+		return false;
+	}
+
+	/**
+	 * Unloads the current image stored in the internal buffer, if there is one.
+	 */
+	public void unloadImage() {
+		if (state.image == null) return;
+		state.image = null;
+	}
+
+	/**
+	 * Draws the image currently in the turtle's internal buffer. The image is rotated so that the top faces the turtle's current heading.
+	 */
+	public void drawPicture() {
+		if (state.image == null) return;
+		world.canvas.drawImg(world.canvas.g2, state.image, (int)getX(), (int)getY(), heading());
 	}
 }

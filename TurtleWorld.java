@@ -62,7 +62,7 @@ public class TurtleWorld extends JFrame {
 					loaded = true;
 					break;
 				} catch (IOException e) {
-					System.out.println("Image failed to load. Details: ");
+					System.out.println("Image exists but failed to load. Details: ");
 					System.out.println("Path: " + imgFile.getPath());
 					System.out.println("Absolute path: " + imgFile.getAbsolutePath());
 					e.printStackTrace();

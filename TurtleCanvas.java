@@ -47,21 +47,24 @@ public class TurtleCanvas extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		// g.setColor(Color.black);
-		// g.drawLine(0,0,100,100);
 		g.drawImage(img, 0, 0, null);
+		Turtle turtle;
+		BufferedImage turtleImg;
 		if (turtles != null) {
-			// BufferedImage v;
 			for (int i = 0; i < turtles.size(); i++) {
-				// v = rotate(turtleImg, turtles.get(i).heading() + 90);
-				// g.drawImage(v, (int)(turtles.get(i).getX() - v.getWidth() / 2), (int)(turtles.get(i).getY() - v.getHeight() / 2), this);
-				drawImg((Graphics2D)g, turtleImg, (int)turtles.get(i).getX(), (int)turtles.get(i).getY(), turtles.get(i).heading());
+				turtle = turtles.get(i);
+				turtleImg = turtle.getImage();
+				if (turtleImg != null) {
+					drawImg((Graphics2D)g, turtleImg, (int)turtle.getX(), (int)turtle.getY(), turtle.heading());
+				} else {
+					drawImg((Graphics2D)g, this.turtleImg, (int)turtle.getX(), (int)turtle.getY(), turtle.heading());
+				}
 			}
 		}
 		g2.setStroke(new java.awt.BasicStroke(1));
 	}
 
-	private void drawImg(Graphics2D g2, BufferedImage img, int x, int y, double r) {
+	protected void drawImg(Graphics2D g2, BufferedImage img, int x, int y, double r) {
 		x -= img.getWidth() / 2;
 		y -= img.getHeight() / 2;
 		AffineTransform backup = g2.getTransform();
@@ -70,6 +73,18 @@ public class TurtleCanvas extends JPanel {
 		g2.setTransform(a);
 		g2.drawImage(img, x, y, null);
 		g2.setTransform(backup);
+	}
+	protected void drawImage(Graphics2D g2, BufferedImage img, int x, int y, double r, double sx, double sy) {
+		x -= img.getWidth() / 2;
+		y -= img.getHeight() / 2;
+		AffineTransform backup = g2.getTransform();
+		AffineTransform a = AffineTransform.getScaleInstance(1, 1);
+		a.rotate(Math.toRadians(r+90), x + img.getWidth() / 2, y + img.getHeight() / 2);
+		a.concatenate(backup);
+		g2.setTransform(a);
+		g2.drawImage(img, x, y, null);
+		g2.setTransform(backup);
+
 	}
 
 	public BufferedImage getImage() {

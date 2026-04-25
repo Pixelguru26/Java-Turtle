@@ -2,7 +2,7 @@
 
 A turtle implementation for Java.
 
-Turtle is an excellent and time-honored tool for teaching kay concepts to new programmers. It's an essential part of my curriculum, but when I attempted to integrate it into a Java course, I found it impossible to procure a ready-to-use implementation online.
+Turtle is an excellent and time-honored tool for teaching key concepts to new programmers. It's an essential part of my curriculum, but when I attempted to integrate it into a Java course, I found it impossible to procure a ready-to-use implementation online.
 
 So I made one.
 
